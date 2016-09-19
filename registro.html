@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>Registro</title>
+<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+<script>
+		function vervalores(){
+			var sAux="";
+			var frm = document.getElementById("registro");
+			for (i=0;i<frm.elements.length;i++)
+				{ sAux += "NOMBRE: " + frm.elements[i].name + " ";
+				sAux += "VALOR: " + frm.elements[i].value + "\n" ;
+				}
+			alert(sAux);
+		}
+	</script>
+</head>
+<body>
+<div id="container">
+	<div id="intro">
+		<div id="pageHeader">
+			<h1><span>Registro</span></h1>
+		</div>
+		<div id="supportingText">
+			<form id='registro' name='registro' onSubmit='vervalores()'>
+			<h3><span>Nombre:</span></h3>
+			<input type="text" name="name" value="">
+			<br>
+			<h3><span>Apellido:</span></h3>
+			<input type="text" name="apellido" value="">
+			<br>
+			<h3><span>Email:</span></h3>    
+			<input type="text" name="mail" value="">
+			<br>
+			<h3><span>Contraseña:</span></h3>
+			<input type="text" name="pass" value="">
+			<br>
+			<h3><span>Telefono:</span></h3>
+			<input type="text" name="telefono" value="">
+			<br>
+			<h3><span>Especialidad:</span></h3>
+			<select>
+			<option value="is">Ingenieria de Software</option>
+			<option value="com">Computacion</option>
+			<option value="hard">Arquitectura de Computadores</option>
+			</select>
+			<br>
+			
+			<input type="submit" value="Submit">
+			</form>
+		</div>
+	</div>
+
+	</div>
+
+	
+	<div id="linkList">
+		<div id="linkList2">
+			<div id="lselect">
+				<ul>
+					<li><a href="layout.html">Pagina Principal</a></li>
+					<li><a href="creditos.html">Creditos</a></li>
+					<li><a href="registro.html">Registrarse</a></li>
+				</ul>
+			</div>
+
+			<div id="larchives">
+				<h3 class="archives"><span>Links</span></h3>
+				<ul>
+					<li><a href="http://es.wikipedia.org/wiki/Quiz">Que es un Quiz?</a></li>
+					<li><a href="https://github.com">Link GITHUB/a></li>
+				</ul>
+			</div>
+		</div>
+  </div>
+</div>
+</body>
+</html>
