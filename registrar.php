@@ -13,11 +13,10 @@ $subs_telef = utf8_decode($_POST['telefono']);
 $subs_pass = utf8_decode($_POST['pass']);
 $subs_esp = utf8_decode($_POST['especialidad']);
 $subs_otro = utf8_decode($_POST['otro']);
-$namefields = '/^[a-z]+[0-9]{3}@ikasle.ehu.(es|eus)$/';
 
-if (!filter_var($subs_email,FILTER_VALIDATE_REGEXP,$namefields)){
+if (!filter_var($subs_email,FILTER_VALIDATE_REGEXP,array("options"=>array("regexp"=>"/^[a-z]+[0-9]{3}@ikasle.ehu.(es|eus)$/"))))
+{
    die('Error: El correo es incorrecto');
-
 }
 
 if ($subs_esp == otros){
