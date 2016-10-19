@@ -1,3 +1,38 @@
+<?php
+if (isset($_POST['email'])){
+$db_host="mysql.hostinger.es";
+$db_user="u390657429_mikel";
+$db_password="73737373";
+$db_name="u390657429_quiz";
+$db_table_name="Usuario";
+$link = mysqli_connect($db_host, $db_user, $db_password, $db_name); 
+
+if (!$link)
+{
+	die ("Fallo al intentar conectarse a MySQL".mysqli_error($link));
+}
+
+mysqli_select_db ($link ,$db_name ) or die(mysqli_error()); 
+
+$email = utf8_decode($_POST['email']);
+$pass = utf8_decode($_POST['pass']);
+
+$usuarios = mysqli_query($link, "select * from Usuario where Email='$email' and Contrasena='$pass'"); 
+$cont= mysqli_num_rows($usuarios);
+if($cont==1)
+{
+header("location:loginok.html");
+}
+	else 
+	{
+		echo "<script languaje='javascript'>alert('ERROR!!  Intentalo de nuevo amigo')</script>";	
+	}
+  
+mysqli_close($link); 
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +55,6 @@
         <div id="menu">
           <ul>
             <li><a href="registro.html">REGISTRARSE</a></li>
-            <li><a href="login.php">LOGIN</a></li>
           </ul>
           <p class="clearpara"></p>
           <!--/menu-->
@@ -28,11 +62,10 @@
         <p class="clearpara"></p>
         <!--/topwrap-->
       </div>
-      <div class="logo">
-        <h1 class="title"><a href="#">QUIZ <em> El juego de las preguntas</em></a></h1>
+      <div class="logo">  
         <p class="clearpara"></p>
         <!--/logo-->
-      </div>
+		</div>	
       <div class="latest-project">
         <div class="section_header">
           <h2> ENTRADA </h2>
@@ -40,18 +73,21 @@
         </div>
         <div class="post">
           
-          <div  class="postmeta">
-          </div>
-          <p> Aqui iran las preguntas y demas.
-          </p>
-          <p class="clearpara"></p>
+         <div  class="postmeta">
+         </div>
+		<form action="login.php" method="post">           
+		<h3>Identificación de usuario </h3>                
+		<p> Email   : <input type="email"  required name="email" size="21" value="" />                
+		Password: <input type="password" required name="pass" size="21" value="" />                
+		<p> <input id="input_2" type="submit" />
+		</form>
+         <p class="clearpara"></p>
         </div>
       </div>
       <p class="clearpara"></p>
       <div class="categories">
         <ul>
 			<li><a href="layout.html">Pagina Principal</a></li>
-			<li><a href="preguntas.php">Preguntas</a></li>
 			<li><a href="creditos.html">Creditos</a></li>
         </ul>
         <!--/categories-->
