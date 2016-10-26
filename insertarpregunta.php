@@ -45,7 +45,7 @@ VALUES ('$subs_question','$subs_answer','$subs_level','$subs_subject','$subs_ema
 	die('Error: ' . mysqli_error($link));
 	}
 
- echo "<script languaje='javascript'>alert('La pregunta se ha registrado correctamente')</script>";
+ echo "<script languaje='javascript'>alert('La pregunta se ha registrado correctamente en tabla preguntas ')</script>";
 
  }	
 	else 	
@@ -53,6 +53,27 @@ VALUES ('$subs_question','$subs_answer','$subs_level','$subs_subject','$subs_ema
 		echo "<script languaje='javascript'>alert('ERROR!! Try again')</script>";
 	} 
 mysqli_close($link); 
+
+
+if (file_exists('preguntas.xml')) {
+    $xml = @simplexml_load_file('preguntas.xml');
+	if ($xml){
+	 $assessmentItem = $xml->addChild('assessmentItem','');
+	$assessmentItem->addAttribute('complexity',$subs_level);
+	$assessmentItem->addAttribute('subject',$subs_subject);
+	$itemBody = $assessmentItem ->addChild('itemBody','');
+	$p = $itemBody->addChild('p',$subs_question);
+	$correctResponse = $assessmentItem->addChild('correctResponse','');
+	$value = $correctResponse->addChild('value',$subs_answer);
+	echo $xml->saveXML('preguntas.xml' );
+	echo "<script languaje='javascript'>alert('La pregunta se ha insertado correctamente en preguntas XML')</script>";				
+	}else{
+	echo "<script languaje='javascript'>alert('Error al insertar en preguntas XML')</script>";	
+	}
+
+} else {
+    echo "<script languaje='javascript'>alert('ERROR!! Abriendo archivo preguntas.xml')</script>";	
+}
 
 }
 ?>
