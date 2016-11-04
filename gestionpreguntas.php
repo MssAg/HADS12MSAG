@@ -1,84 +1,3 @@
-<?php
-if (isset($_POST['email'])){
-$db_host="localhost";
-$db_user="root";
-$db_password="";
-$db_name="Quiz";
-$db_table_name="Usuario";
-$link = mysqli_connect($db_host, $db_user, $db_password, $db_name); 
-
-if (!$link)
-{
-	die ("Fallo al intentar conectarse a MySQL".mysqli_error($link));
-}
-
-mysqli_select_db ($link ,$db_name ) or die(mysqli_error()); 
-
-$subs_email = utf8_decode($_POST['email']);
-$subs_pass = utf8_decode($_POST['pass']);
-
-$usuarios = mysqli_query($link, "select * from Usuario where Email='$subs_email' and Contrasena='$subs_pass'"); 
-$cont= mysqli_num_rows($usuarios);
-if($cont==1)
-{
-mysqli_close($link); 
-$db_host="localhost";
-$db_user="root";
-$db_password="";
-$db_name="Quiz";
-$db_table_name="Preguntas";
-$link  = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-   
-$subs_question = utf8_decode($_POST['pregunta']);
-$subs_answer = utf8_decode($_POST['respuesta']);
-$subs_level = utf8_decode($_POST['dificultad']); 
-$subs_subject = utf8_decode($_POST['subject']);
-
-
-$sql="INSERT INTO Preguntas(Pregunta, Respuesta, Dificultad, Subject, Email) 
-VALUES ('$subs_question','$subs_answer','$subs_level','$subs_subject','$subs_email')";
-    
-
-	if (!mysqli_query($link ,$sql))
-
-	{
-	die('Error: ' . mysqli_error($link));
-	}
-
- echo "";
-
- }	
-	else 	
-	{
-		echo "";
-	} 
-mysqli_close($link); 
-
-
-if (file_exists('preguntas.xml')) {
-    $xml = @simplexml_load_file('preguntas.xml');
-	if ($xml){
-	 $assessmentItem = $xml->addChild('assessmentItem','');
-	$assessmentItem->addAttribute('complexity',$subs_level);
-	$assessmentItem->addAttribute('subject',$subs_subject);
-	$itemBody = $assessmentItem ->addChild('itemBody','');
-	$p = $itemBody->addChild('p',$subs_question);
-	$correctResponse = $assessmentItem->addChild('correctResponse','');
-	$value = $correctResponse->addChild('value',$subs_answer);
-	echo $xml->saveXML('preguntas.xml' );
-	echo "La pregunta se ha insertado correctamente en preguntas XML";				
-	}else{
-	echo "Error al insertar en preguntas XML";	
-	}
-
-} else {
-    echo "<script languaje='javascript'>alert('ERROR!! Abriendo archivo preguntas.xml')</script>";	
-}
-
-}
-?>
-
-
 <script LANGUAGE="JavaScript">
 
 
@@ -102,19 +21,42 @@ XMLHttpRequestObject.onreadystatechange = function()
 
 function ocultarDatos()
 {
-XMLHttpRequestObject = new XMLHttpRequest();
-XMLHttpRequestObject.onreadystatechange = function()
+	document.getElementById('mensaje').innerHTML= "";
+	document.getElementById("email").value = "";
+	document.getElementById("pass").value = "";
+    document.getElementById("pregunta").value = "";
+    document.getElementById("respuesta").value = "";
+    document.getElementById("dificultad").value = "";
+    document.getElementById("subject").value = "";
+}
+
+function ocultarTabla()
+{
+	document.getElementById('resultado').innerHTML= "";
+	document.getElementById('mensaje').innerHTML= "";
+}
+
+function insertarDatos(){
+  
+  var email_var = document.getElementById("email").value;
+  var pass_var = document.getElementById("pass").value;
+  var pregunta_var = document.getElementById("pregunta").value;
+  var respuesta_var = document.getElementById("respuesta").value;
+  var dificultad_var = document.getElementById("dificultad").value;
+  var subject_var = document.getElementById("subject").value;
+  var param= "email="+email_var+"&pass="+pass_var+"&pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
+ 
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function()
 	{
-		if (XMLHttpRequestObject.readyState==4)
-		{
-		
-		document.getElementById('resultado').innerHTML= "";
-		document.getElementById('resultado').innerHTML= "La preguntas se veran aqui";
-		
-		}
+	if(xmlhttp.readyState==4 && xmlhttp.status==200){
+        document.getElementById('resultado').innerHTML= "";
+	document.getElementById('mensaje').innerHTML=xmlhttp.responseText;}
 	}
-	XMLHttpRequestObject.open("GET","verPreguntasXML.php",true); 
-	XMLHttpRequestObject.send();
+	xmlhttp.open("POST","addpreguntas.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
+	xmlhttp.send(param);
+ 
 }
 
 </script>
@@ -167,8 +109,8 @@ XMLHttpRequestObject.onreadystatechange = function()
 		  <form id="registro" name="registro" action= "gestionpreguntas.php" method="post">
 		    
 			<h5>Identificación de usuario </h5>                
-			<p> Email   : <input type="email"  required name="email" size="21" value="" />                
-			Password: <input type="password" required name="pass" size="21" value="" />
+			<p> Email   : <input type="text"  required name="email" id="email" size="21" value="" />                
+			Password: <input type="password" required name="pass" id="pass" size="21" value="" />
 			<p class="clearpara"></p>
 			<br>
 			<h5><span>Datos de la pregunta:</span></h5>
@@ -180,19 +122,20 @@ XMLHttpRequestObject.onreadystatechange = function()
 			<br>
 			<p>Subject: <input type="text" required name="subject" id="subject" size="30" value="">
 			<br>			
-			<input type="submit" value="Insertar Pregunta">
+			<input type="button" value="Insertar Pregunta" onclick ="insertarDatos()">
 			<input type="button" value="VerPreguntas" onclick ="pedirDatos()">
-			<input type="button" value="OcultarPreguntas" onclick ="ocultarDatos()">
+			<input type="button" value="Ocultar Preguntas" onclick ="ocultarTabla()">
+			<input type="button" value="Borrar Datos" onclick ="ocultarDatos()">
 		 </form>
           <p class="clearpara"></p>
         </div>
+	  <div id="mensaje"><b></b></div> 
+	  <div id="resultado"><b></b></div> 
       </div>
       <p class="clearpara"></p>
-	  <div id="resultado"><b>Las preguntas se verán aqui...</b></div> 
-	  <div id="mensaje"><b>Los mensajes se verán aqui...</b></div> 
       <div class="categories">
         <ul>
-			<li><a href="loginok.html">Volver a Inicio</a></li>
+			<li><a href="loginok.html">Volver</a></li>
         </ul>
         <!--/categories-->
       </div>
