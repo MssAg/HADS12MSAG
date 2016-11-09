@@ -73,7 +73,7 @@ if (file_exists('preguntas.xml')) {
  }	
 	else 	
 	{
-		echo "Error al introducir los datos. Inténtelo de nuevo";
+		echo "Error al introducir los datos. Intentelo de nuevo";
 	} 
 mysqli_close($link); 
 
