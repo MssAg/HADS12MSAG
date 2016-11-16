@@ -1,6 +1,4 @@
 
-
-
 <?php
 if (isset($_POST['email'])){
 $db_host="mysql.hostinger.es";
@@ -30,9 +28,11 @@ if($cont==1)
 	//$var = $_SESSION['user'];
 	//print ("<P>Valor de la variable de sesión: $var</P>\n");
 	if ($email == 'web000@ehu.es'){
+                $_SESSION['usertype'] = "profesor";
 		header("location:revisar.php");
 	}
 	else{
+                $_SESSION['usertype'] = "alumno";
 		header("location:gestionpreguntas.php");
 	}
 	

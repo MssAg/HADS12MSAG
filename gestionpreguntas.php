@@ -1,7 +1,7 @@
  <?php
 	session_start();	
 	
-	if(empty($_SESSION['user']) ){ 
+	if($_SESSION['usertype'] != "alumno" ){ 
 		header("location:layout.html");
 		exit();
 	} 
