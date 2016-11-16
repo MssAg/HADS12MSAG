@@ -1,3 +1,6 @@
+
+
+
 <?php
 if (isset($_POST['email'])){
 $db_host="mysql.hostinger.es";
@@ -21,12 +24,24 @@ $usuarios = mysqli_query($link, "select * from Usuario where Email='$email' and 
 $cont= mysqli_num_rows($usuarios);
 if($cont==1)
 {
-header("location:loginok.html");
-}
-	else 
-	{
-		echo "<script languaje='javascript'>alert('ERROR!!  Intentalo de nuevo amigo')</script>";	
+	session_start ();
+	$_SESSION['user'] = $email;
+	$_SESSION['pass'] = $pass;
+	//$var = $_SESSION['user'];
+	//print ("<P>Valor de la variable de sesión: $var</P>\n");
+	if ($email == 'web000@ehu.es'){
+		header("location:revisar.php");
 	}
+	else{
+		header("location:gestionpreguntas.php");
+	}
+	
+}
+	
+else 
+{
+	echo "<script languaje='javascript'>alert('ERROR!!  Intentalo de nuevo amigo')</script>";	
+}
   
 mysqli_close($link); 
 }

@@ -3,6 +3,7 @@ session_start();
 
 //if (isset($_POST['email'])){
 if (isset($_SESSION['user'])){
+
 $db_host="mysql.hostinger.es";
 $db_user="u390657429_mikel";
 $db_password="73737373";
@@ -17,8 +18,6 @@ if (!$link)
 
 mysqli_select_db ($link ,$db_name ) or die(mysqli_error()); 
 
-//$email = $_POST['email'];
-//$pass = $_POST['pass'];
 $email = $_SESSION['user'];
 $pass = $_SESSION['pass'];
 
@@ -31,49 +30,30 @@ if($cont==1)
 	$db_user="u390657429_mikel";
 	$db_password="73737373";
 	$db_name="u390657429_quiz";
-	$db_table_name="Preguntas";	
+	$db_table_name="Preguntas";
 	$link  = mysqli_connect($db_host, $db_user, $db_password, $db_name);
    
 	//print_r($_POST);
+	$ID = $_POST['ID'];
 	$pregunta = $_POST['pregunta'];
 	$respuesta = $_POST['respuesta'];
 	$dificultad = $_POST['dificultad']; 
 	$subject = $_POST['subject'];
 
 
-	$sql="INSERT INTO Preguntas(Pregunta, Respuesta, Dificultad, Subject, Email) 
-	VALUES ('$pregunta','$respuesta','$dificultad','$subject','$email')";
+	$sql="UPDATE Preguntas
+	SET Pregunta='$pregunta', Respuesta='$respuesta', Dificultad='$dificultad', Subject='$subject', Email='$email'
+	WHERE ID=$ID";
     
 	if (!mysqli_query($link ,$sql))
 	{
 		die('Error: ' . mysqli_error($link));
 	}
 
-	echo "";
+	echo "La pregunta se ha insertado correctamente";
 
 	mysqli_close($link); 
 
-	if (file_exists('preguntas.xml')) 
-	{
-		$xml = @simplexml_load_file('preguntas.xml');
-		if ($xml)
-		{
-			$assessmentItem = $xml->addChild('assessmentItem','');
-			$assessmentItem->addAttribute('complexity',$dificultad);
-			$assessmentItem->addAttribute('subject',$subject);
-			$itemBody = $assessmentItem ->addChild('itemBody','');
-			$p = $itemBody->addChild('p',$pregunta);
-			$correctResponse = $assessmentItem->addChild('correctResponse','');
-			$value = $correctResponse->addChild('value',$respuesta);
-			$xml->saveXML('preguntas.xml' );
-			echo "La pregunta se ha insertado correctamente";				
-		}else{
-			echo "Error al insertar en preguntas XML";	
-		}	
-
-	} else {
-		echo "ERROR!! Abriendo archivo preguntas.xml";	
-	}
 
  }	
 else 	

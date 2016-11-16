@@ -15,11 +15,11 @@ $result = mysqli_query($connection, $query);
 echo "<table>";
 echo "<table border=1> 
 <tr> 
-<th> ID </th><th> PREGUNTA </th> <th> RESPUESTA </th> <th> DIFICULTAD </th> <th> SUBJECT </th> <th> EMAIL </th>
+<th> PREGUNTA </th> <th> DIFICULTAD </th> <th> AUTOR </th>
 </tr>";
 
 while($row = mysqli_fetch_array($result)){
-echo "<tr><td>" . $row['ID'] . "</td><td>" . $row['Pregunta'] . "</td><td>" . $row['Respuesta'] . "</td><td>". $row['Dificultad'] . "</td><td>". $row['Subject'] . "</td><td>". $row['Email'] . "</td></tr>";
+echo "<tr><td>" . $row['Pregunta'] . "</td><td>" . $row['Dificultad'] .  "</td><td>". $row['Email'] . "</td></tr>";
 }
 echo "</table>";
 echo "<br>";

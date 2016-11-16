@@ -7,6 +7,7 @@
 	} 
 ?>
 
+
 <script LANGUAGE="JavaScript">
 
 
@@ -25,13 +26,14 @@ XMLHttpRequestObject.onreadystatechange = function()
 		}
 	}
 
-	XMLHttpRequestObject.open("GET","preguntas2.php",true); 
+	XMLHttpRequestObject.open("GET","preguntarespuesta.php",true); 
 	XMLHttpRequestObject.send();
 }
 
 function ocultarDatos()
 {
 	document.getElementById('mensaje').innerHTML= "";
+    document.getElementById("ID").value = "";
     document.getElementById("pregunta").value = "";
     document.getElementById("respuesta").value = "";
     document.getElementById("dificultad").value = "";
@@ -44,16 +46,14 @@ function ocultarTabla()
 	document.getElementById('mensaje').innerHTML= "";
 }
 
-function insertarDatos(){
-  
-  //var email_var = document.getElementById("email").value;
-  //var pass_var = document.getElementById("pass").value;
+function modificarDatos(){
+    
+  var codigo_var = document.getElementById("ID").value;
   var pregunta_var = document.getElementById("pregunta").value;
   var respuesta_var = document.getElementById("respuesta").value;
   var dificultad_var = document.getElementById("dificultad").value;
   var subject_var = document.getElementById("subject").value;
-  //var param= "email="+email_var+"&pass="+pass_var+"&pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
-  var param="pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
+  var param= "ID="+codigo_var+"&pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
  
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
@@ -63,7 +63,7 @@ function insertarDatos(){
 	document.getElementById('mensaje').innerHTML=xmlhttp.responseText;
 		}
 	}
-	xmlhttp.open("POST","addpreguntas.php",true);
+	xmlhttp.open("POST","updatepreguntas.php",true);
 	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
 	xmlhttp.send(param);
  
@@ -109,16 +109,19 @@ function insertarDatos(){
       </div>
       <div class="latest-project">
         <div class="section_header">
-          <h2> INSERTAR PREGUNTA </h2>
+          <h2> EDITAR PREGUNTA </h2>
           <p class="clearpara"></p>
         </div>
         <div class="post">
           
           <div  class="postmeta">
           </div>
-		  <form id="registro" name="registro" action= "gestionpreguntas.php" method="post">
+		  <form id="registro" name="registro" action= "revisar.php" method="post">
+		    
 			<br>
 			<h5><span>Datos de la pregunta:</span></h5>
+			<p>Codigo*: <input type="text" required name="ID" id="ID" size="30" value="">
+			<br>
 			<p>Enunciado Pregunta: <input type="text" required name="pregunta" id="pregunta" size="30" value="">
 			<br>
 			<p>Respuesta correcta: <input type="text" required name="respuesta" id="respuesta" size="30" value="">		
@@ -127,7 +130,7 @@ function insertarDatos(){
 			<br>
 			<p>Subject: <input type="text" required name="subject" id="subject" size="30" value="">
 			<br>			
-			<input type="button" value="Insertar Pregunta" onclick ="insertarDatos()">
+			<input type="button" value="Modificar Pregunta" onclick ="modificarDatos()">
 			<input type="button" value="VerPreguntas" onclick ="pedirDatos()">
 			<input type="button" value="Ocultar Preguntas" onclick ="ocultarTabla()">
 			<input type="button" value="Borrar Datos" onclick ="ocultarDatos()">

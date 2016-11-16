@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +12,7 @@
 		var email=document.getElementById("mail").value;
 		var telefono=document.getElementById("telefono").value;
 		var password=document.getElementById("pass").value;
+		var repassword=document.getElementById("repass").value;
 			
 		/* 2 apellidos, solo letras con un espacio*/
 		var expr = /^[A-Za-z]+[ ][A-Za-z]+$/;
@@ -45,6 +43,12 @@
 		if (password.length < 6)
 		{
 			alert("Error en el password: minimo 6 caracteres");
+			return false;
+		}
+		
+		if (password != repassword)
+		{
+			alert("Comprobacion contraseña erronea!!");
 			return false;
 		}
 				
@@ -87,6 +91,8 @@
         </div>
         <div id="menu">
           <ul>
+            <li><a href="registro.html">REGISTRARSE</a></li>
+            <li><a href="layout.html">LOGIN</a></li>
           </ul>
           <p class="clearpara"></p>
           <!--/menu-->
@@ -108,7 +114,7 @@
           
           <div  class="postmeta">
           </div>
-		  <form id="registro" name="registro" action= "registro.php" method="post" onsubmit="return verificar()">
+		  <form id="registro" name="registro" action= "registrar.php" method="post" onsubmit="return verificar()">
 			<h5><span>Nombre:</span></h5>
 			<input type="text" name="name" id="name" size="25" value="">
 			<br>
@@ -120,6 +126,9 @@
 			<br>
 			<h5><span>Contraseña:</span></h5>
 			<input type="password" name="pass" id="pass" size="25" value="">
+			<br>
+			<h5><span>Repite Contraseña:</span></h5>
+			<input type="password" name="repass" id="repass" size="25" value="">
 			<br>
 			<h5><span>Telefono:</span></h5>
 			<input type="text" name="telefono" id="telefono" size="25" value="">
@@ -171,4 +180,3 @@
 </div>
 </body>
 </html>
-					
