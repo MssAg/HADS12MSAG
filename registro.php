@@ -16,6 +16,8 @@ $subs_telef = utf8_decode($_POST['telefono']);
 $subs_pass = utf8_decode($_POST['pass']);
 $subs_esp = utf8_decode($_POST['especialidad']);
 $subs_otro = utf8_decode($_POST['otro']);
+$password = password_hash($subs_pass, PASSWORD_DEFAULT);
+$estado ="activo";
 
 $soapclient1 = new nusoap_client( 'http://cursodssw.hol.es/comprobarmatricula.php?wsdl',true);
 
@@ -49,8 +51,14 @@ if ($result1 == "SI" && $result2 == "VALIDA"){
 	
 		$subs_esp = $subs_otro;
 	}
-	$sql="INSERT INTO Usuario(Nombre, Apellido, Email, Contrasena, Telefono, Especialidad) 
-	VALUES ('$subs_name','$subs_last','$subs_email','$subs_pass','$subs_telef','$subs_esp')";
+	
+	$target_path = "fotos";
+	$img_file = $_FILES['uploadedfile']['name'];
+	$ruta= $target_path . '/' . $img_file;
+	move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $ruta);
+	
+	$sql="INSERT INTO Usuario(Nombre, Apellido, Email, Contrasena, Telefono, Especialidad, Foto, Estado) 
+	VALUES ('$subs_name','$subs_last','$subs_email','$password','$subs_telef','$subs_esp', '$ruta', '$estado')";
     
 	if (!mysqli_query($link ,$sql))
 	{

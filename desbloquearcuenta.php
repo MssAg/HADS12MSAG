@@ -1,9 +1,41 @@
+ <?php
+	session_start();	
+	
+	if($_SESSION['usertype'] != "profesor" ){ 
+		header("location:layout.html");
+		exit();
+	} 
+?>
+
+
+<script LANGUAGE="JavaScript">
+
+
+function pedirDatos()
+{
+XMLHttpRequestObject = new XMLHttpRequest();
+XMLHttpRequestObject.onreadystatechange = function()
+	{
+		if (XMLHttpRequestObject.readyState==4)
+		{
+		document.getElementById('resultado').innerHTML= XMLHttpRequestObject.responseText;
+		}
+	}
+	XMLHttpRequestObject.open("GET","usuariosbloqueados.php",true); 
+	XMLHttpRequestObject.send();
+}
+
+</script>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Preguntas</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" >
+
 </head>
 <body id="pagetop" >
 <div class="pagewrap">
@@ -18,10 +50,9 @@
           <div class="clearpara"></div>
         </div>
         <div id="menu">
-          <ul>
-            <li><a href="registro.html">REGISTRARSE</a></li>
-            <li><a href="login.php">LOGIN</a></li>
-			<li><a href="recuperar.php">Modificar Contraseña</a></li>
+          <ul>	
+                  <li><a href="logout.php">LOGOUT</a></li>
+                  <li style="color: white; margin:5px"><?php echo ($_SESSION['user']); ?></li>
           </ul>
           <p class="clearpara"></p>
           <!--/menu-->
@@ -30,28 +61,35 @@
         <!--/topwrap-->
       </div>
       <div class="logo">
-        <h1 class="title"><a href="#">QUIZ <em> El juego de las preguntas</em></a></h1>
         <p class="clearpara"></p>
         <!--/logo-->
       </div>
       <div class="latest-project">
         <div class="section_header">
-          <h2> ENTRADA </h2>
+          <h2> CUENTAS BLOQUEADAS </h2>
           <p class="clearpara"></p>
         </div>
         <div class="post">
           
           <div  class="postmeta">
           </div>
-          <p><h4><a href="responderpreguntas.php">¿Cuánto sabés? Pruébame</a></h4></p>
-          <p class="clearpara"></p>
-        </div>
+                        <form id="desbloquear" name="desbloquear" action= "desbloquear.php" method="post">
+		        <input type="button" value="Ver Usuarios" onclick ="pedirDatos()">
+			<div id="resultado"><b></b></div> 
+			<br>
+			<h5><span>¿Desea restaurar una cuenta de usuario?</span></h5>	
+			<br>			
+			<input type="submit"  id="submit" value="Desbloquear Cuenta">
+			<br>
+                        </form>
+             
+        </div> 
+		
       </div>
       <p class="clearpara"></p>
       <div class="categories">
         <ul>
-			<li><a href="layout.html">Pagina Principal</a></li>
-			<li><a href="creditos.html">Creditos</a></li>
+		<li><a href="loginok.php">Volver</a></li>	
         </ul>
         <!--/categories-->
       </div>

@@ -6,27 +6,13 @@
 		exit();
 	} 
 ?>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script LANGUAGE="JavaScript">
 
 
 function pedirDatos()
 {
-XMLHttpRequestObject = new XMLHttpRequest();
-XMLHttpRequestObject.onreadystatechange = function()
-	{
-		if (XMLHttpRequestObject.readyState==4)
-		{
-		
-		//tabla de respuestas
-		document.getElementById('resultado').innerHTML= XMLHttpRequestObject.responseText;
-		document.getElementById('mensaje').innerHTML= "";
-		
-		}
-	}
-
-	XMLHttpRequestObject.open("GET","preguntas2.php",true); 
-	XMLHttpRequestObject.send();
+$.ajax({ url: 'preguntas2.php', success: function(response) { $('#resultado').html(response); $('#mensaje').html("");}});
 }
 
 function ocultarDatos()
@@ -55,6 +41,9 @@ function insertarDatos(){
   //var param= "email="+email_var+"&pass="+pass_var+"&pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
   var param="pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
  
+  if ((pregunta_var !="") && (respuesta_var !="") && (subject_var !=""))
+  {
+ 
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
 	{
@@ -66,7 +55,32 @@ function insertarDatos(){
 	xmlhttp.open("POST","addpreguntas.php",true);
 	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
 	xmlhttp.send(param);
+  }
+  else
+  {
+	document.getElementById('resultado').innerHTML= "";
+	document.getElementById('mensaje').innerHTML= "Rellenar campos obligatorios";	  
+  }
  
+}
+
+var myVar = setInterval(function(){ mostrarPreguntas() }, 5000);
+
+function mostrarPreguntas()
+{
+XMLHttpRequestObject = new XMLHttpRequest();
+XMLHttpRequestObject.onreadystatechange = function()
+	{
+		if (XMLHttpRequestObject.readyState==4)
+		{
+
+		document.getElementById('todaspreguntas').innerHTML= XMLHttpRequestObject.responseText;
+		
+		}
+	}
+
+	XMLHttpRequestObject.open("GET","todaspreguntas.php",true); 
+	XMLHttpRequestObject.send();
 }
 
 </script>
@@ -96,6 +110,7 @@ function insertarDatos(){
         <div id="menu">
           <ul>
 			 <li><a href="logout.php">LOGOUT</a></li>
+                         <li style="color: white; margin:5px"><?php echo ($_SESSION['user']); ?></li>
           </ul>
           <p class="clearpara"></p>
           <!--/menu-->
@@ -119,14 +134,15 @@ function insertarDatos(){
 		  <form id="registro" name="registro" action= "gestionpreguntas.php" method="post">
 			<br>
 			<h5><span>Datos de la pregunta:</span></h5>
-			<p>Enunciado Pregunta: <input type="text" required name="pregunta" id="pregunta" size="30" value="">
+			<p>Enunciado Pregunta*: <input type="text" required name="pregunta" id="pregunta" size="30" value="">
 			<br>
-			<p>Respuesta correcta: <input type="text" required name="respuesta" id="respuesta" size="30" value="">		
+			<p>Respuesta correcta*: <input type="text" required name="respuesta" id="respuesta" size="30" value="">		
 			<br>
 			<p>Dificultad (1 a 5): <input type="text" name="dificultad" id="dificultad" size="30" value="">   	
 			<br>
-			<p>Subject: <input type="text" required name="subject" id="subject" size="30" value="">
-			<br>			
+			<p>Subject*: <input type="text" required name="subject" id="subject" size="30" value="">
+			<br>	
+                        <div id="todaspreguntas"><h6>Mis Preguntas/Todas las preguntas:</h6></div> 		
 			<input type="button" value="Insertar Pregunta" onclick ="insertarDatos()">
 			<input type="button" value="VerPreguntas" onclick ="pedirDatos()">
 			<input type="button" value="Ocultar Preguntas" onclick ="ocultarTabla()">

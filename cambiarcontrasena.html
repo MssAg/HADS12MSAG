@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Preguntas</title>
+<title>Cambiar Contrasena</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" >
+<script LANGUAGE="JavaScript">	
+	function verificar()
+	{
+		var password=document.getElementById("pass1").value;
+		var repassword=document.getElementById("pass2").value;
+							
+		if (password.length < 6)
+		{
+			alert("Error en el password: minimo 6 caracteres");
+			return false;
+		}
+		
+		if (password != repassword)
+		{
+			alert("Comprobacion contraseña erronea!!");
+			return false;
+		}
+								
+		return true;
+	}
+	
+</script>
 </head>
 <body id="pagetop" >
 <div class="pagewrap">
@@ -17,41 +39,39 @@
           </form>
           <div class="clearpara"></div>
         </div>
-        <div id="menu">
-          <ul>
-            <li><a href="registro.html">REGISTRARSE</a></li>
-            <li><a href="login.php">LOGIN</a></li>
-			<li><a href="recuperar.php">Modificar Contraseña</a></li>
-          </ul>
-          <p class="clearpara"></p>
-          <!--/menu-->
-        </div>
         <p class="clearpara"></p>
         <!--/topwrap-->
       </div>
-      <div class="logo">
-        <h1 class="title"><a href="#">QUIZ <em> El juego de las preguntas</em></a></h1>
+      <div class="logo">  
         <p class="clearpara"></p>
         <!--/logo-->
-      </div>
+		</div>	
       <div class="latest-project">
-        <div class="section_header">
-          <h2> ENTRADA </h2>
+	    <div class="section_header">
+          <h2> CAMBIAR CONTRASEÑA </h2>
           <p class="clearpara"></p>
         </div>
+
         <div class="post">
           
-          <div  class="postmeta">
-          </div>
-          <p><h4><a href="responderpreguntas.php">¿Cuánto sabés? Pruébame</a></h4></p>
-          <p class="clearpara"></p>
+         <div  class="postmeta">
+         </div>
+		<form action="cambiarcontrasena.php" method="post" onsubmit="return verificar()">           
+		<br>
+		<p> Introduce tu nueva contraseña: </p>
+		<h5> Password:<input type="password"  required id="pass1" name="pass1" size="40" value="" /> </h5> 
+		<p> Repite tu nueva contraseña: </p>
+		<h5>Password: <input type="password" required id="pass2" name="pass2" size="40" value="" /> </h5>
+		<br>
+		<p> <input id="input_2" type="submit" />
+		</form>
+         <p class="clearpara"></p>
         </div>
       </div>
       <p class="clearpara"></p>
       <div class="categories">
         <ul>
-			<li><a href="layout.html">Pagina Principal</a></li>
-			<li><a href="creditos.html">Creditos</a></li>
+			<li><a href="logout.php">Pagina Principal</a></li>
         </ul>
         <!--/categories-->
       </div>

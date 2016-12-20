@@ -114,7 +114,7 @@
           
           <div  class="postmeta">
           </div>
-		  <form id="registro" name="registro" action= "registro.php" method="post" onsubmit="return verificar()">
+		  <form id="registro" name="registro" action= "registro.php" method="post" enctype="multipart/form-data" onsubmit="return verificar()">
 			<h5><span>Nombre:</span></h5>
 			<input type="text" name="name" id="name" size="25" value="">
 			<br>
@@ -143,6 +143,9 @@
 			<br>
 			<input type="text" name="otro" id="otro" size="25" disabled =true value="">
 			<br>
+			<h5><span>Foto (opcional):</span></h5>
+			<img id="foto" name="foto" src="images/ganesha.png" width="100" height="100">
+			<input type="file" name="uploadedfile" id="uploadedfile" onchange = "document.getElementById('foto').src = window.URL.createObjectURL(this.files[0])"/>
 			<br>		
 			<input type="submit" value="Submit">
 			</form>
@@ -153,7 +156,6 @@
       <div class="categories">
         <ul>
 			<li><a href="layout.html">Pagina Principal</a></li>
-			<li><a href="VerUsuarios.php">Tabla de Registros</a></li>
         </ul>
         <!--/categories-->
       </div>

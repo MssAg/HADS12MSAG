@@ -1,6 +1,7 @@
 <?php
-session_start ();
-if (isset($_POST['email'])){	
+if (isset($_POST['email'])){
+	session_start();	
+	
 	$db_host="mysql.hostinger.es";
 	$db_user="u390657429_mikel";
 	$db_password="73737373";
@@ -16,68 +17,42 @@ if (isset($_POST['email'])){
 	mysqli_select_db ($link ,$db_name ) or die(mysqli_error()); 
 
 	$email = utf8_decode($_POST['email']);
-	$pass = utf8_decode($_POST['pass']);
+	$recuperar = utf8_decode($_POST['recuperar']);
 
-	//$usuarios = mysqli_query($link, "select * from Usuario where Email='$email' and Contrasena='$password'"); 
-	$usuarios = mysqli_query($link, "select * from Usuario where Email='$email'"); 
-
+	$usuarios = mysqli_query($link, "select * from Usuario where Email='$email' and Recuperar='$recuperar'"); 
 
 	$cont= mysqli_num_rows($usuarios);
-	$row = mysqli_fetch_array($usuarios);
-
-	if( ($cont==1) && password_verify($pass, $row['Contrasena']) )
+	if( ($cont==1) )
 	{
-		
-		if ($row['Estado'] =="bloqueado"){
-			die("SU CUENTA ESTA BLOQUEADA, ja ja");
-		}
-			
-		//session_start ();
+		//session_start();
 		$_SESSION['user'] = $email;
-		$_SESSION['pass'] = $pass;
+		$_SESSION['usertype'] = "seguro";
 	
 		$var = $_SESSION['user'];
 		//print ("<P>Valor de la variable de sesión: $var</P>\n");
-	
-		if ($var == "web000@ehu.es"){
-			$_SESSION['usertype'] = "profesor";
-			header("location:loginok.php");
-		}
-		else{
-			$_SESSION['usertype'] = "alumno";
-			header("location:gestionpreguntas.php");
-		}	
+		header("location:cambiarcontrasena.html");
 	}
+	
 	else if (!isset($_SESSION['intentos']))
 	{
 		$_SESSION['intentos'] = 1;
 		echo "<script languaje='javascript'>alert('ERROR!! Intentalo de nuevo amigo')</script>";	
-		
 	}
+	
 	else if ($_SESSION['intentos'])
-	{
+	{	
 		$_SESSION['intentos'] ++;
-		if ($_SESSION['intentos'] > 2){
+		if ($_SESSION['intentos'] > 2)
+		{
 			session_destroy();
-			
-			if ($cont==1){
-				$sql="UPDATE Usuario
-				SET Estado='bloqueado'
-				WHERE Email='$email'";
-    
-				if (!mysqli_query($link ,$sql))
-				{
-					die('Error: ' . mysqli_error($link));
-				}			
-			}	
 			header("location:layout.html");
 		}
-		else{
+		else
+		{
 			echo "<script languaje='javascript'>alert('ERROR!! Intentalo de nuevo amigo')</script>";
-		}			
-	}
-	 
-	mysqli_close($link); 
+		}	
+	}  
+mysqli_close($link); 
 }
 ?>
 
@@ -85,7 +60,7 @@ if (isset($_POST['email'])){
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>Recuperar Contrasena</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" >
 </head>
@@ -101,13 +76,6 @@ if (isset($_POST['email'])){
           </form>
           <div class="clearpara"></div>
         </div>
-        <div id="menu">
-          <ul>
-            <li><a href="registro.html">REGISTRARSE</a></li>
-          </ul>
-          <p class="clearpara"></p>
-          <!--/menu-->
-        </div>
         <p class="clearpara"></p>
         <!--/topwrap-->
       </div>
@@ -116,20 +84,19 @@ if (isset($_POST['email'])){
         <!--/logo-->
 		</div>	
       <div class="latest-project">
-        <div class="section_header">
-          <h2> ENTRADA </h2>
-          <p class="clearpara"></p>
-        </div>
+
         <div class="post">
           
          <div  class="postmeta">
          </div>
-		<form action="login.php" method="post">           
-		<h3>Identificación de usuario </h3>                
-		<p> Email   : <input type="email"  required name="email" size="21" value="" />                
-		Password: <input type="password" required name="pass" size="21" value="" /> 
+		<form action="recuperar.php" method="post">           
+		<h4>¿Olvidó la Contrasena? </h4> 
 		<br>
-		<a href="recuperar.php" style="margin: 35%;">Olvido la contraseña?</a>	
+		<p> Ingresa tu dirección de email: </p>
+		<h5> Email:<input type="email"  required name="email" size="40" value="" /> </h5> 
+		<p> ¿Cuál es tu pueblo favorito? </p>
+		<h5>Respuesta: <input type="password" required name="recuperar" size="30" value="" /> </h5>
+		<br>
 		<p> <input id="input_2" type="submit" />
 		</form>
          <p class="clearpara"></p>
@@ -138,7 +105,7 @@ if (isset($_POST['email'])){
       <p class="clearpara"></p>
       <div class="categories">
         <ul>
-			<li><a href="layout.html">Pagina Principal</a></li>
+			<li><a href="layout.html">Volver</a></li>
         </ul>
         <!--/categories-->
       </div>

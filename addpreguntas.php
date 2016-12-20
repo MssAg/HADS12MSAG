@@ -22,9 +22,10 @@ mysqli_select_db ($link ,$db_name ) or die(mysqli_error());
 $email = $_SESSION['user'];
 $pass = $_SESSION['pass'];
 
-$usuarios = mysqli_query($link, "select * from Usuario where Email='$email' and Contrasena='$pass'"); 
+$usuarios = mysqli_query($link, "select * from Usuario where Email='$email'"); 
 $cont= mysqli_num_rows($usuarios);
-if($cont==1)
+$row = mysqli_fetch_array($usuarios);
+if(($cont==1) && password_verify($pass, $row['Contrasena']))
 {
 	mysqli_close($link); 
 	$db_host="mysql.hostinger.es";

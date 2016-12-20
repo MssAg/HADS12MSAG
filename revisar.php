@@ -54,7 +54,9 @@ function modificarDatos(){
   var dificultad_var = document.getElementById("dificultad").value;
   var subject_var = document.getElementById("subject").value;
   var param= "ID="+codigo_var+"&pregunta="+pregunta_var+"&respuesta="+respuesta_var+"&dificultad="+dificultad_var+"&subject="+subject_var;
- 
+
+  if ((codigo_var !="") && (pregunta_var !="") && (respuesta_var !="") && (subject_var !=""))
+  { 
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
 	{
@@ -66,7 +68,12 @@ function modificarDatos(){
 	xmlhttp.open("POST","updatepreguntas.php",true);
 	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
 	xmlhttp.send(param);
- 
+  }
+  else
+  {
+	document.getElementById('resultado').innerHTML= "";
+	document.getElementById('mensaje').innerHTML= "Rellenar campos obligatorios";	  
+  }
 }
 
 </script>
@@ -96,6 +103,7 @@ function modificarDatos(){
         <div id="menu">
           <ul>
 			 <li><a href="logout.php">LOGOUT</a></li>
+                         <li style="color: white; margin:5px"><?php echo ($_SESSION['user']); ?></li>
           </ul>
           <p class="clearpara"></p>
           <!--/menu-->
@@ -122,13 +130,13 @@ function modificarDatos(){
 			<h5><span>Datos de la pregunta:</span></h5>
 			<p>Codigo*: <input type="text" required name="ID" id="ID" size="30" value="">
 			<br>
-			<p>Enunciado Pregunta: <input type="text" required name="pregunta" id="pregunta" size="30" value="">
+			<p>Enunciado Pregunta*: <input type="text" required name="pregunta" id="pregunta" size="30" value="">
 			<br>
-			<p>Respuesta correcta: <input type="text" required name="respuesta" id="respuesta" size="30" value="">		
+			<p>Respuesta correcta*: <input type="text" required name="respuesta" id="respuesta" size="30" value="">		
 			<br>
 			<p>Dificultad (1 a 5): <input type="text" name="dificultad" id="dificultad" size="30" value="">   	
 			<br>
-			<p>Subject: <input type="text" required name="subject" id="subject" size="30" value="">
+			<p>Subject*: <input type="text" required name="subject" id="subject" size="30" value="">
 			<br>			
 			<input type="button" value="Modificar Pregunta" onclick ="modificarDatos()">
 			<input type="button" value="VerPreguntas" onclick ="pedirDatos()">
@@ -143,7 +151,7 @@ function modificarDatos(){
       <p class="clearpara"></p>
       <div class="categories">
         <ul>
-			
+	    <li><a href="loginok.php">Volver</a></li>		
         </ul>
         <!--/categories-->
       </div>
