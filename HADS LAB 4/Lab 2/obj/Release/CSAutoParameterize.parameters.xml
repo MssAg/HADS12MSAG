@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="HADS12_UsuariosConnectionString-Web.config Connection String" description="HADS12_UsuariosConnectionString Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="Data Source=tcp:hads12msag.database.windows.net,1433;Initial Catalog=HADS12_Usuarios;Persist Security Info=True;User ID=HADS12@hads12msag;Password=Dinosaurio12" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Mikel\\Desktop\\HADS\.Lab4\.7\\Lab\ 2\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='HADS12_UsuariosConnectionString']/@connectionString" />
+  </parameter>
+</parameters>
